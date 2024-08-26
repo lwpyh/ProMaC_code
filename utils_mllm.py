@@ -181,8 +181,6 @@ template_q='Name of the {} in one word.'
 template_bg_q='Name of the environment of the {} in one word.'
 prompt_qkeys_dict={
     'TheCamo':          ['camouflaged animal'],
-    'TheShadow':        ['shadow'],
-    'TheGlass':         ['glass'],
     'ThePolyp':         ['polyp'],
     'TheSkin':          ['Skin Lesion'],
 }
@@ -246,6 +244,8 @@ def Seg_custom(cur_image, text, bbox_list, clip_model, sam_predictor, iter, args
     cur_image = cur_image.astype(np.uint8)
     image_height, image_width = cur_image.shape[:2]
     blocks = [(0, 0, image_width, image_height)]
+
+    # split image into various patches
     if patches == 0.5:
         center_left = image_width // 4
         center_upper = image_height // 4
@@ -404,7 +404,7 @@ def get_reflected_text_from_img(pil_img, clip_model, bbox_last_iter, img_path, m
                 for block in all_blocks:
                     left, upper, right, lower = block
                     patch = Image.fromarray(cur_image[upper:lower, left:right]).convert("RGB")
-                    text_fg, text_bg, bbox_p, bbox_patch, caption_patch, bbox_avaliable = get_text_from_img_llava_with_bbox(patch, prompt_q,
+                    text_fg, text_bg, bbox_p, bbox_patch, caption_patch, bbox_avaliable = get_text_from_img_llava_with_bbox_iter0(patch, prompt_q,
                             model, vis_processors, tokenizer,
                             get_bg_text=get_bg_text,
                             conv_mode=conv_mode,
@@ -532,7 +532,7 @@ def get_reflected_text_from_img(pil_img, clip_model, bbox_last_iter, img_path, m
                     left, upper, right, lower = block
                     patch = Image.fromarray(cur_image[upper:lower, left:right]).convert("RGB")
                     generated_patches = generated_image.crop((left, upper, right, lower))
-                    text_fg, text_bg, bbox_p, bbox_patch, caption_patch, bbox_avaliable = get_text_from_img_llava_with_bbox_1(patch, generated_patches, prompt_q,
+                    text_fg, text_bg, bbox_p, bbox_patch, caption_patch, bbox_avaliable = get_text_from_img_llava_with_bbox_patch(patch, generated_patches, prompt_q,
                             model, vis_processors, tokenizer,
                             get_bg_text=get_bg_text,
                             conv_mode=conv_mode,
@@ -561,18 +561,18 @@ def get_reflected_text_from_img(pil_img, clip_model, bbox_last_iter, img_path, m
                     bbox_most = []
 
             # generate bbox candidte for the unprocessed full image
-            bbox_pre = get_reflected_text_from_img_llava_pre(pil_img, generated_image, prompt_q, text_list,
+            bbox_full = get_reflected_text_from_full_img_llava(pil_img, generated_image, prompt_q, text_list,
                         model, vis_processors, tokenizer,
                         conv_mode=conv_mode,
                         temperature=temperature,
                         reset_prompt_qkeys=reset_prompt_qkeys,
                         new_prompt_qkeys_l=new_prompt_qkeys_l)
-            if bbox_pre != []:
-                bbox_rel_list.append(bbox_pre)
+            if bbox_full != []:
+                bbox_rel_list.append(bbox_full)
             print("instance-specific bounding box", bbox_rel_list)
 
             # based on previous collected bbox and class infroamtion to get the final text_list and bbox 
-            text_final_list, _, bbox, predict_possibility = get_reflected_text_from_img_llava(pil_img, generated_image, bbox_most, bbox_rel_list, prompt_q, text_list, 
+            text_final_list, _, bbox, predict_possibility = get_reflected_text_from_img_llava_collected(pil_img, generated_image, bbox_most, bbox_rel_list, prompt_q, text_list, 
                         model, vis_processors, tokenizer,
                         conv_mode=conv_mode,
                         temperature=temperature,
@@ -581,7 +581,7 @@ def get_reflected_text_from_img(pil_img, clip_model, bbox_last_iter, img_path, m
                         bg_cat_list=bg_cat_list)    
             return [text_final_list], [text_bg_list], [1.], bbox, predict_possibility
 
-def get_reflected_text_from_img_llava(
+def get_reflected_text_from_img_llava_collected(
     pil_img, image_black, bbox_most, bbox_rel_list, prompt_q, text_candidate_list,
     model, image_processor, tokenizer,
     conv_mode='llava_v0',
@@ -812,7 +812,7 @@ def expand_bbox(bbox, expansion_rate=0.15):
     
     return [new_x1, new_y1, new_x2, new_y2]
 
-def get_reflected_text_from_img_llava_pre(
+def get_reflected_text_from_full_img_llava(
     pil_img, image_black, prompt_q, text_candidate_list,
     model, image_processor, tokenizer,
     conv_mode='llava_v0',
@@ -971,7 +971,7 @@ def get_reflected_text_from_img_llava_pre(
                     bounding_box_floats = [0.0, 0.0, 0.0, 0.0]
     return bounding_box_floats
 
-def get_text_from_img_llava_with_bbox(
+def get_text_from_img_llava_with_bbox_iter0(
     pil_img, prompt_q,
     model, image_processor, tokenizer,
     get_bg_text=False,
@@ -1109,7 +1109,7 @@ def get_text_from_img_llava_with_bbox(
         textbg_list=['background']
     return text_list, textbg_list+bg_cat_list, bbox_ori, bbox_patch, caption_list, bbox_avaliable
 
-def get_text_from_img_llava_with_bbox_1(
+def get_text_from_img_llava_with_bbox_patch(
     pil_img, image_black, prompt_q,
     model, image_processor, tokenizer,
     get_bg_text=False,
