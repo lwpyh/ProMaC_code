@@ -1,13 +1,37 @@
-
 # :fire: ProMaC
 
 Code release of paper:
 
-**Leveraging Hallucinations to Reduce Manual Prompt
-Dependency in Promptable Segmentation**
+[**Leveraging Hallucinations to Reduce Manual Prompt Dependency in Promptable Segmentation**](https://arxiv.org/abs/2312.07374)
 
+[Jian Hu](https://lwpyh.github.io/), [Jiayi Lin](https://jylin8100.github.io/), [Junchi Yan](https://thinklab.sjtu.edu.cn/), [Shaogang Gong](http://www.eecs.qmul.ac.uk/~sgg/)
 
+Queen Mary University of London, Shanghai Jiao Tong University
 
+<a href='https://arxiv.org/abs/2312.07374'><img src='https://img.shields.io/badge/ArXiv-2312.07374-red' /></a> 
+<a href='https://lwpyh.github.io/ProMaC/'><img src='https://img.shields.io/badge/Project-Page-Green'></a>
+<a href='#demo'><img src='https://img.shields.io/badge/Replicate-Demo-violet'></a>
+
+## :rocket: Updates
+* **[2024.08.26]** [Demo](#demo) of GenSAM is released.
+* **[2024.08.26]** Model running instructions with LLaVA1.5 on CHAMELEON dataset is released.
+ 
+<p align="center">
+  <img src="demo_show.gif" width="100%" />
+</p>
+<p align="center">
+  <img src="framework_GenSAM.gif" width="100%" />
+</p>
+
+<img src='supp_cod.png'>
+
+## :bulb: Highlight
+
+Promptable segmentation typically requires instance-specific manual prompts to guide the segmentation of each desired object.To minimize such a need, task-generic promptable segmentation has been introduced, which employs a single task-generic prompt to segment various images of different objects in the same task.Current methods use Multimodal Large Language Models (MLLMs) to reason detailed instance-specific prompts from a task-generic prompt for improving segmentation accuracy. The effectiveness of this segmentation heavily depends on the precision of these derived prompts. However, MLLMs often suffer hallucinations during reasoning, resulting in inaccurate prompting. While existing methods focus on eliminating hallucinations to improve a model, we argue that MLLM hallucinations can reveal valuable contextual insights when leveraged correctly, as they represent pre-trained large-scale knowledge beyond individual images. In this paper, we utilize hallucinations to mine task-related information from images and verify its accuracy for enhancing precision of the generated prompts. 
+
+A brief introduction of how we ProMaC do!
+<img src='AIG_framework_v2.png'>
+Specifically, we introduce an iterative Prompt-Mask Cycle generation framework (ProMaC) with a prompt generator and a mask generator. The prompt generator uses a multi-scale chain of thought prompting, initially exploring hallucinations for extracting extended contextual knowledge on a test image. These hallucinations are then reduced to formulate precise instance-specific prompts, directing the mask generator to produce masks consistenting with task semantics by mask semantic alignment. The generated masks iteratively induce the prompt generator to focus more on task-relevant image areas and reduce irrelevant hallucinations, resulting jointly in better prompts and masks. 
 ## Quick Start
 <!-- The prompt-dialogue of varies abilities are saved in [dataset](https://github.com/crystraldo/StableLLAVA/tree/main/dataset). -->
 
@@ -28,17 +52,52 @@ python data_to_llava.py --image_path train_set/ --prompt_path dataset/ --save_pa
 - **[CAMO](https://drive.google.com/open?id=1h-OqZdwkuPhBvGcVAwmh0f1NGqlH_4B6)**
 - **[CHAMELEON](https://www.polsl.pl/rau6/datasets/)**
 2. Put it in ./data/.
-### Running GenSAM on CHAMELON Dataset with LLaVA1/LLaVA1.5
-1. When playing with LLaVA, this code was implemented with Python 3.8 and PyTorch 2.1.0. You can install all the requirements via:
+### Running ProMaC on CHAMELON Dataset with LLaVA1.5
+1. When playing with LLaVA, this code was implemented with Python 3.8 and PyTorch 2.1.0. We recommend creating [virtualenv](https://virtualenv.pypa.io/) environment and installing all the dependencies, as follows:
 ```bash
-pip install -r requirements_llava.txt
+# create virtual environment
+virtualenv ProMaC
+source ProMaC/bin/activate
+# prepare LLaVA
+git clone https://github.com/haotian-liu/LLaVA.git
+cd LLaVA
+pip install -e .
+cd ..
+# prepare SAM
+pip install git+https://github.com/facebookresearch/segment-anything.git
+wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
+pip install opencv-python imageio ftfy urllib3==1.26.6
 ```
-2. Our GenSAM is a training-free test-time adaptation approach, so you can play with it by running:
+2. Our ProMaC is a training-free test-time adaptation approach, so you can play with it by running:
 ```bash
-python main.py --config config/CHAMELON.yaml
+python main.py --config config/CHAMELEON.yaml  
 ```
-or
-```bash
-sh script_llava.sh
-``` 
-# ProMaC_code
+
+ ## Demo
+ We further prepare a [jupyter notebook demo](https://github.com/lwpyh/promaC_code/blob/main/demo.ipynb) for visualization.
+ 1. Complete the following steps in the shell before opening the jupyter notebook. \
+ The virtualenv environment named ProMaC needs to be created first following [Quick Start](#running-gensam-on-chamelon-dataset-with-llava1llava15).
+```
+pip install notebook 
+pip install ipykernel ipywidgets
+python -m ipykernel install --user --name ProMaC
+```
+ 2. Open demo.ipynb and select the 'ProMaC' kernel in the running notebook.
+ 
+
+
+
+ ## TO-DO LIST
+- [x] Update datasets and implementation scripts
+- [x] Demo and Codes
+- [ ] Keep incorporating more capabilities
+
+
+## :cupid: Acknowledgements
+
+- [GenSAM](https://github.com/jyLin8100/GenSAM)
+- [Segment Anything](https://github.com/facebookresearch/segment-anything)
+- [LLaVA](https://github.com/haotian-liu/LLaVA)
+- [BLIP2](https://github.com/salesforce/LAVIS/tree/main/projects/blip2)
+- [CLIP Surgery](https://github.com/xmed-lab/CLIP_Surgery)
+
