@@ -15,23 +15,26 @@ Queen Mary University of London, Shanghai Jiao Tong University
 ## :rocket: Updates
 * **[2024.08.26]** [Demo](#demo) of GenSAM is released.
 * **[2024.08.26]** Model running instructions with LLaVA1.5 on CHAMELEON dataset is released.
- 
-<p align="center">
-  <img src="demo_show.gif" width="100%" />
-</p>
-<p align="center">
-  <img src="framework_GenSAM.gif" width="100%" />
-</p>
 
-<img src='supp_cod.png'>
+</p>
+<p align="center">
+  <img src="visulization_n.png" width="100%" />
+</p>
 
 ## :bulb: Highlight
 
 Promptable segmentation typically requires instance-specific manual prompts to guide the segmentation of each desired object.To minimize such a need, task-generic promptable segmentation has been introduced, which employs a single task-generic prompt to segment various images of different objects in the same task.Current methods use Multimodal Large Language Models (MLLMs) to reason detailed instance-specific prompts from a task-generic prompt for improving segmentation accuracy. The effectiveness of this segmentation heavily depends on the precision of these derived prompts. However, MLLMs often suffer hallucinations during reasoning, resulting in inaccurate prompting. While existing methods focus on eliminating hallucinations to improve a model, we argue that MLLM hallucinations can reveal valuable contextual insights when leveraged correctly, as they represent pre-trained large-scale knowledge beyond individual images. In this paper, we utilize hallucinations to mine task-related information from images and verify its accuracy for enhancing precision of the generated prompts. 
 
+<p align="center">
+  <img src="motivation.png" width="100%" />
+</p>
 A brief introduction of how we ProMaC do!
-<img src='AIG_framework_v2.png'>
+<p align="center">
+  <img src="frame_promac.png" width="100%" />
+</p>
 Specifically, we introduce an iterative Prompt-Mask Cycle generation framework (ProMaC) with a prompt generator and a mask generator. The prompt generator uses a multi-scale chain of thought prompting, initially exploring hallucinations for extracting extended contextual knowledge on a test image. These hallucinations are then reduced to formulate precise instance-specific prompts, directing the mask generator to produce masks consistenting with task semantics by mask semantic alignment. The generated masks iteratively induce the prompt generator to focus more on task-relevant image areas and reduce irrelevant hallucinations, resulting jointly in better prompts and masks. 
+<img src='framework_ProMaC_v10.png'>
+
 ## Quick Start
 <!-- The prompt-dialogue of varies abilities are saved in [dataset](https://github.com/crystraldo/StableLLAVA/tree/main/dataset). -->
 
