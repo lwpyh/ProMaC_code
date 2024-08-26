@@ -29,11 +29,15 @@ Promptable segmentation typically requires instance-specific manual prompts to g
   <img src="motivation.png" width="100%" />
 </p>
 A brief introduction of how we ProMaC do!
+
 <p align="center">
   <img src="frame_promac.png" width="100%" />
 </p>
 Specifically, we introduce an iterative Prompt-Mask Cycle generation framework (ProMaC) with a prompt generator and a mask generator. The prompt generator uses a multi-scale chain of thought prompting, initially exploring hallucinations for extracting extended contextual knowledge on a test image. These hallucinations are then reduced to formulate precise instance-specific prompts, directing the mask generator to produce masks consistenting with task semantics by mask semantic alignment. The generated masks iteratively induce the prompt generator to focus more on task-relevant image areas and reduce irrelevant hallucinations, resulting jointly in better prompts and masks. 
-<img src='framework_ProMaC_v10.png'>
+</p>
+<p align="center">
+  <img src="framework_ProMaC_v10.png" width="100%" />
+</p>
 
 ## Quick Start
 <!-- The prompt-dialogue of varies abilities are saved in [dataset](https://github.com/crystraldo/StableLLAVA/tree/main/dataset). -->
