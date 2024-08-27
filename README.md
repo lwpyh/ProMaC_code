@@ -80,6 +80,10 @@ pip install diffusers transformers==4.36.0 accelerate scipy safetensors
 ```bash
 python main.py --config config/CHAMELEON.yaml  
 ```
+or
+```bash
+bash script_llava.sh
+```
 
  ## Demo
  We further prepare a [jupyter notebook demo](https://github.com/lwpyh/promaC_code/blob/main/demo.ipynb) for visualization.
