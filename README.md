@@ -12,7 +12,7 @@ Queen Mary University of London, Shanghai Jiao Tong University
 <a href='https://lwpyh.github.io/ProMaC/'><img src='https://img.shields.io/badge/Project-Page-Green'></a>
 <a href='#demo'><img src='https://img.shields.io/badge/Replicate-Demo-violet'></a>
 
-## :rocket: Updates
+## :rocket: News
 * **[2024.08.26]** [Demo](#demo) of ProMaC is released.
 * **[2024.08.26]** Model running instructions with LLaVA1.5 on CHAMELEON dataset is released.
 
