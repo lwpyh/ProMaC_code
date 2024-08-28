@@ -8,7 +8,7 @@ Code release of paper:
 
 Queen Mary University of London, Shanghai Jiao Tong University
 
-<a href='https://arxiv.org/abs/2312.07374'><img src='https://img.shields.io/badge/ArXiv-2312.07374-red' /></a> 
+<a href='https://arxiv.org/abs/2408.15205'><img src='https://img.shields.io/badge/ArXiv-2312.07374-red' /></a> 
 <a href='https://lwpyh.github.io/ProMaC/'><img src='https://img.shields.io/badge/Project-Page-Green'></a>
 <a href='#demo'><img src='https://img.shields.io/badge/Replicate-Demo-violet'></a>
 
