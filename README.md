@@ -2,7 +2,7 @@
 
 Code release of paper:
 
-[**Leveraging Hallucinations to Reduce Manual Prompt Dependency in Promptable Segmentation**](https://arxiv.org/abs/2312.07374)
+[**Leveraging Hallucinations to Reduce Manual Prompt Dependency in Promptable Segmentation**](https://arxiv.org/abs/2408.15205)
 
 [Jian Hu](https://lwpyh.github.io/), [Jiayi Lin](https://jylin8100.github.io/), [Junchi Yan](https://thinklab.sjtu.edu.cn/), [Shaogang Gong](http://www.eecs.qmul.ac.uk/~sgg/)
 
