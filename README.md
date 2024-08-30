@@ -104,6 +104,18 @@ python -m ipykernel install --user --name ProMaC
 - [x] Demo and Codes
 - [ ] Keep incorporating more capabilities
 
+## Citation
+
+If you find our work useful in your research, please consider citing:
+
+```
+@article{hu2024leveraging,
+  title={Leveraging Hallucinations to Reduce Manual Prompt Dependency in Promptable Segmentation},
+  author={Hu, Jian and Lin, Jiayi and Yan, Junchi and Gong, Shaogang},
+  journal={arXiv preprint arXiv:2408.15205},
+  year={2024}
+}
+```
 
 ## :cupid: Acknowledgements
 
