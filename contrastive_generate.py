@@ -105,7 +105,6 @@ def generate_post(
     negative_prompt_ids: Optional[torch.Tensor] = None,
     negative_prompt_attention_mask: Optional[torch.Tensor] = None,
     alpha: Optional[float] = None,
-    beta: Optional[float] = None,
     **kwargs,
 ) -> Union[GenerateOutput, torch.LongTensor]:
     if synced_gpus is None:
@@ -387,7 +386,6 @@ def generate_post(
             synced_gpus=synced_gpus,
             streamer=streamer,
             alpha=alpha,
-            beta=beta,
             **model_kwargs,
         )
 
@@ -793,7 +791,6 @@ def sample(
         synced_gpus: bool = False,
         streamer: Optional["BaseStreamer"] = None,
         alpha: Optional[float] = None,
-        beta: Optional[float] = None,
         **model_kwargs,
     ) -> Union[SampleOutput, torch.LongTensor]:
         # init values
