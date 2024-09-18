@@ -677,17 +677,6 @@ def get_reflected_text_from_img_llava_collected(
                     f"attention_mask_blackout": attention_mask,
                     f"inputs_embeds_blackout": inputs_embeds
                 })
-            inputs,position_ids,attention_mask,_,inputs_embeds,_ = model.prepare_inputs_labels_for_multimodal(
-                input_ids,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            )
-
-            model_kwargs.update( {"postion_ids_blackall":position_ids,"attention_mask_blackall":attention_mask, "inputs_embeds_blackall": inputs_embeds} )
 
             stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
             keywords = [stop_str]
@@ -699,12 +688,11 @@ def get_reflected_text_from_img_llava_collected(
                     model,
                     input_ids=None,
                     do_sample=True,
-                    temperature=temperature,
+                    # temperature=temperature,
                     max_new_tokens=1024,
                     use_cache=True,
                     streamer=streamer,
                     alpha=1.0,
-                    beta=0.0,
                     **model_kwargs,
                     stopping_criteria=[stopping_criteria],
                     return_dict_in_generate=True,
@@ -897,18 +885,6 @@ def get_reflected_text_from_full_img_llava(
                     f"inputs_embeds_blackout": inputs_embeds
                 })
 
-            inputs,position_ids,attention_mask,_,inputs_embeds,_ = model.prepare_inputs_labels_for_multimodal(
-                input_ids,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            )
-
-            model_kwargs.update( {"postion_ids_blackall":position_ids,"attention_mask_blackall":attention_mask, "inputs_embeds_blackall": inputs_embeds} )
-
             stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
             keywords = [stop_str]
             stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
@@ -924,7 +900,6 @@ def get_reflected_text_from_full_img_llava(
                     use_cache=True,
                     streamer=streamer,
                     alpha=1.0,
-                    beta=0.0,
                     **model_kwargs,
                     stopping_criteria=[stopping_criteria],
                     return_dict_in_generate=True,
@@ -1226,7 +1201,6 @@ def get_text_from_img_llava_with_bbox_patch(
                     use_cache=True,
                     streamer=streamer,
                     alpha=1.0,
-                    beta=0.0,
                     **model_kwargs,
                     stopping_criteria=[stopping_criteria],
                     return_dict_in_generate=True,

@@ -105,7 +105,6 @@ def generate_post(
     negative_prompt_ids: Optional[torch.Tensor] = None,
     negative_prompt_attention_mask: Optional[torch.Tensor] = None,
     alpha: Optional[float] = None,
-    beta: Optional[float] = None,
     **kwargs,
 ) -> Union[GenerateOutput, torch.LongTensor]:
     if synced_gpus is None:
@@ -122,6 +121,7 @@ def generate_post(
         # two conditions must be met
         # 1) the generation config must have been created from the model config (`_from_model_config` field);
         # 2) the generation config must have seen no modification since its creation (the hash is the same).
+        print(self.generation_config._from_model_config,self.generation_config._original_object_hash)
         if self.generation_config._from_model_config and self.generation_config._original_object_hash == hash(
             self.generation_config
         ):
@@ -135,7 +135,6 @@ def generate_post(
                 )
                 self.generation_config = new_generation_config
         generation_config = self.generation_config
-
     generation_config = copy.deepcopy(generation_config)
     model_kwargs = generation_config.update(**kwargs)  # All unused kwargs must be model kwargs
     
@@ -238,7 +237,6 @@ def generate_post(
 
     # 7. determine generation mode
     generation_mode = self._get_generation_mode(generation_config, assistant_model)
-
     if streamer is not None and (generation_config.num_beams > 1):
         raise ValueError(
             "`streamer` cannot be used with beam search (yet!). Make sure that `num_beams` is set to 1."
@@ -254,7 +252,6 @@ def generate_post(
             " running `.generate()`.",
             UserWarning,
         )
-
     # 8. prepare distribution pre_processing samplers
     logits_processor = self._get_logits_processor(
         generation_config=generation_config,
@@ -266,7 +263,6 @@ def generate_post(
         negative_prompt_ids=negative_prompt_ids,
         negative_prompt_attention_mask=negative_prompt_attention_mask,
     )
-
     # 9. prepare stopping criteria
     stopping_criteria = self._get_stopping_criteria(
         generation_config=generation_config, stopping_criteria=stopping_criteria
@@ -387,7 +383,6 @@ def generate_post(
             synced_gpus=synced_gpus,
             streamer=streamer,
             alpha=alpha,
-            beta=beta,
             **model_kwargs,
         )
 
@@ -793,7 +788,6 @@ def sample(
         synced_gpus: bool = False,
         streamer: Optional["BaseStreamer"] = None,
         alpha: Optional[float] = None,
-        beta: Optional[float] = None,
         **model_kwargs,
     ) -> Union[SampleOutput, torch.LongTensor]:
         # init values
@@ -846,22 +840,15 @@ def sample(
 
         model_kwargs_blackout = dict()
         model_kwargs_new = dict()
-        model_kwargs_blackall = dict()
         for k,v in model_kwargs.items():
             if k.endswith("_blackout"):
                 model_kwargs_blackout[k] = v
-            elif k.endswith("_blackall"):
-                model_kwargs_blackall[k] = v
             else:
                 model_kwargs_new[k] = v
         
         if model_kwargs_blackout:
             if "use_cache" in model_kwargs:
                 model_kwargs_blackout["use_cache"] = model_kwargs["use_cache"]
-
-        if model_kwargs_blackall:
-            if "use_cache" in model_kwargs:
-                model_kwargs_blackall["use_cache"] = model_kwargs["use_cache"]
 
         while True:
             if synced_gpus:
@@ -911,17 +898,6 @@ def sample(
                 # pre-process distribution
                 # next_tokens_scores_blackout = logits_processor(input_ids, next_token_logits_blackout)
                 
-                model_inputs_blackall = self.prepare_inputs_for_generation(input_ids, **model_kwargs_blackall)
-                # forward pass to get next token
-                outputs_blackall = self(
-                    **model_inputs_blackall,
-                    return_dict=True,
-                    output_attentions=output_attentions,
-                    output_hidden_states=output_hidden_states,
-                )
-                if synced_gpus and this_peer_finished:
-                    continue  # don't waste resources running the code we don't need
-                next_token_logits_blackall = outputs_blackall.logits[:, -1, :]
                 # pre-process distribution
                 # next_tokens_scores_blackall = logits_processor(input_ids, next_token_logits_blackall)
 
