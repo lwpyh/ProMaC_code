@@ -627,7 +627,7 @@ def get_reflected_text_from_img_llava_collected(
             qs = [caption_q1] + [caption_k] 
 
         image = pil_img #load_image(img_path)
-        conv = conv_templates[conv_mode].copy() # 是否需要改一下system 提示词，换成caption？
+        conv = conv_templates[conv_mode].copy()
     
         for i, inp in enumerate(qs):
             if image is not None:
@@ -1001,7 +1001,7 @@ def get_text_from_img_llava_with_bbox_iter0(
 
 
         image = pil_img #load_image(img_path)
-        conv = conv_templates[conv_mode].copy() # 是否需要改一下system 提示词，换成caption？
+        conv = conv_templates[conv_mode].copy() 
 
         for i, inp in enumerate(qs):
             if i==fg_idx and use_gene_prompt_fg:

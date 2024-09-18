@@ -75,7 +75,7 @@ cd ..
 pip install git+https://github.com/facebookresearch/segment-anything.git
 wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
 pip install opencv-python imageio ftfy urllib3==1.26.6
-pip install diffusers transformers==4.36.0 accelerate scipy safetensors
+pip install diffusers transformers==4.36.0 accelerate scipy safetensors protobuf
 ```
 2. Our ProMaC is a training-free test-time adaptation approach, so you can play with it by running:
 ```bash
