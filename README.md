@@ -13,6 +13,7 @@ Queen Mary University of London, Shanghai Jiao Tong University
 <a href='#demo'><img src='https://img.shields.io/badge/Replicate-Demo-violet'></a>
 
 ## :rocket: News
+* **[2024.09.25]** ProMaC is accepted to NeurIPS 2024!
 * **[2024.08.30]** Model running instructions with LLaVA1.5 on CAMO and COD10K datasets are released.
 * **[2024.08.26]** [Demo](#demo) of ProMaC is released.
 * **[2024.08.26]** Model running instructions with LLaVA1.5 on CHAMELEON dataset is released.
