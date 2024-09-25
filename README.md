@@ -1,4 +1,4 @@
-# :fire: ProMaC: Leveraging Hallucinations to Reduce Manual Prompt Dependency in Promptable Segmentation
+# :fire: [NeurIPS24] ProMaC: Leveraging Hallucinations to Reduce Manual Prompt Dependency in Promptable Segmentation
 
 Code release of paper:
 
