@@ -27,7 +27,7 @@ Queen Mary University of London, Shanghai Jiao Tong University
 
 Promptable segmentation typically requires instance-specific manual prompts to guide the segmentation of each desired object.To minimize such a need, task-generic promptable segmentation has been introduced, which employs a single task-generic prompt to segment various images of different objects in the same task.Current methods use Multimodal Large Language Models (MLLMs) to reason detailed instance-specific prompts from a task-generic prompt for improving segmentation accuracy. The effectiveness of this segmentation heavily depends on the precision of these derived prompts. However, MLLMs often suffer hallucinations during reasoning, resulting in inaccurate prompting. While existing methods focus on eliminating hallucinations to improve a model, we argue that MLLM hallucinations can reveal valuable contextual insights when leveraged correctly, as they represent pre-trained large-scale knowledge beyond individual images. In this paper, we utilize hallucinations to mine task-related information from images and verify its accuracy for enhancing precision of the generated prompts. 
 <p align="center">
-  <img src="demo_v4.mp4" width="100%" />
+  <img src="demo_v4-ezgif.com-speed.gif" width="100%" />
 </p>
 <p align="center">
   <img src="motivation.png" width="100%" />
