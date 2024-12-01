@@ -112,7 +112,6 @@ val_metric1 = utils.Averager()
 val_metric2 = utils.Averager()
 val_metric3 = utils.Averager()
 val_metric4 = utils.Averager()
-recursive_times_l = []
 text_similarity = []
 miou_similarity = []
 miou_after_similarity = []
@@ -197,4 +196,3 @@ print(f'\ncloset to fuse (formated):\n\
             {round(val_metric3.item(),4):.3f}\t\
             {round(val_metric2.item(),4):.3f}\t\
             {round(val_metric1.item(),4):.3f}\t')
-print('average recursive times: ', np.mean(recursive_times_l ))
